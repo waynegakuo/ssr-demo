@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, signal } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './user-auth.scss',
   templateUrl: './user-auth.html',
 })
-export class UserAuth {
+export class UserAuth implements OnDestroy {
   authService = inject(AuthService);
 
   // Local pending state for the Google popup sign-in
@@ -38,6 +38,15 @@ export class UserAuth {
         error: (err) => console.error('Sign-in failed', err),
       });
     sub.add(() => this.signingIn.set(false));
+  }
+
+  signOut(): void {
+    this.authService
+      .signOut()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        error: (err) => console.error('Sign-out failed', err),
+      });
   }
 
   private computeInitials(name: string): string {

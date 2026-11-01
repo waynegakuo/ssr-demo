@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Syne', 'Avenir Next', 'Segoe UI', sans-serif;
+  color: #111;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(200, 245, 66, 0.35), transparent 34%),
+    radial-gradient(circle at 88% 12%, rgba(122, 215, 255, 0.3), transparent 28%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      rgba(17, 17, 17, 0.04) 23px,
+      rgba(17, 17, 17, 0.04) 24px
+    ),
+    #f7f7f2;
+}
+
+app-root {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
