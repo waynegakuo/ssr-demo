@@ -6,10 +6,8 @@ import {
   Service,
   signal,
 } from '@angular/core';
-import { Auth, onAuthStateChanged, signInWithPopup, signOut, User } from '@angular/fire/auth';
+import { Auth, onAuthStateChanged, signInWithPopup, signOut, User, GoogleAuthProvider } from '@angular/fire/auth';
 import { from, Observable, of, switchMap } from 'rxjs';
-import firebase from 'firebase/compat/app';
-import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 
 @Service()
 export class AuthService {
