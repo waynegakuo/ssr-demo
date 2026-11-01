@@ -73,4 +73,28 @@ export class AuthService {
       return from(signOut(this.auth));
     });
   }
+
+  /**
+   * Gets the current user's ID
+   * @returns The current user's ID or null if not authenticated
+   */
+  getUserId(): string | null {
+    return this.currentUser() ? this.currentUser()!.uid : null;
+  }
+
+  /**
+   * Gets the current user's display name
+   * @returns The current user's display name or null if not authenticated
+   */
+  getUserDisplayName(): string | null {
+    return this.currentUser() ? this.currentUser()!.displayName : null;
+  }
+
+  /**
+   * Gets the current user's profile photo URL
+   * @returns The current user's profile photo URL or null if not authenticated
+   */
+  getUserPhotoUrl(): string | null {
+    return this.currentUser() ? this.currentUser()!.photoURL : null;
+  }
 }
