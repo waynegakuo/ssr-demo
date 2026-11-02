@@ -1,4 +1,49 @@
-<div class="auth" [class.auth--loading]="loading()">
+<main class="auth" [class.auth--loading]="loading()">
+  <!-- Live Demo Mode Switcher -->
+  <section class="auth__controls" aria-labelledby="demo-heading">
+    <div class="auth__controls-header">
+      <h1 id="demo-heading" class="auth__title">SSR Auth Demo</h1>
+      <span
+        class="auth__mode-pill"
+        [class.auth__mode-pill--improved]="ssrFixEnabled()"
+      >
+        {{ ssrFixEnabled() ? 'Improved Mode' : 'Default Mode' }}
+      </span>
+    </div>
+
+    <p id="ssr-mode-hint" class="auth__hint">
+      @if (ssrFixEnabled()) {
+        Uses <code>__session</code> cookie + <code>FirebaseServerApp</code> + <code>TransferState</code> to render the user on the server without flicker.
+      } @else {
+        Client-only Firebase Auth: server renders Guest first, causing a flash of unauthenticated content on refresh.
+      }
+    </p>
+
+    <div class="auth__switch-row">
+      <label class="auth__switch-label" for="ssr-fix-toggle">
+        <span class="auth__switch-text">Avoid SSR Auth Flicker</span>
+        <input
+          id="ssr-fix-toggle"
+          class="auth__switch-input"
+          type="checkbox"
+          [attr.switch]="''"
+          aria-describedby="ssr-mode-hint"
+          [checked]="ssrFixEnabled()"
+          (change)="onToggleSsrFix($event)"
+        />
+      </label>
+    </div>
+
+    <button
+      type="button"
+      class="auth__btn auth__btn--reload"
+      (click)="reloadPage()"
+    >
+      Reload Page to Test SSR
+    </button>
+  </section>
+
+  <!-- Main Auth Card -->
   @if (loading()) {
     <div class="auth__skeleton" aria-busy="true" aria-label="Loading auth">
       <div class="auth__skeleton-avatar"></div>
@@ -7,7 +52,19 @@
     </div>
   } @else if (isAuthed()) {
     <div class="auth__panel">
-      <div class="auth__avatar" aria-hidden="false">
+      <div
+        class="auth__telemetry"
+        [class.auth__telemetry--ok]="hydrationSource() === 'ssr-transfer-state'"
+        [class.auth__telemetry--warn]="hydrationSource() === 'client-flicker'"
+      >
+        @if (hydrationSource() === 'ssr-transfer-state') {
+          Hydrated via SSR + TransferState (Zero Flicker)
+        } @else {
+          Hydrated on Client after SSR Guest Flash
+        }
+      </div>
+
+      <div class="auth__avatar">
         @if (photoUrl()) {
           <img
             class="auth__avatar-img"
@@ -28,6 +85,10 @@
     </div>
   } @else {
     <div class="auth__panel auth__panel--guest">
+      <div class="auth__telemetry auth__telemetry--guest">
+        Server Rendered: Unauthenticated (Guest)
+      </div>
+
       <button
         type="button"
         class="auth__btn auth__btn--google"
@@ -35,7 +96,7 @@
         [disabled]="signingIn()"
       >
         <span class="auth__google-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -60,4 +121,4 @@
       </button>
     </div>
   }
-</div>
+</main>
