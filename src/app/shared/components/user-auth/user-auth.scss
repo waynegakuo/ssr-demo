@@ -190,6 +190,7 @@
   box-shadow: var(--shadow);
   font: 800 1rem/1.1 inherit;
   color: var(--ink);
+  text-decoration: none;
   cursor: pointer;
   transition: transform 120ms ease, box-shadow 120ms ease;
 
@@ -209,6 +210,12 @@
   }
 }
 
+.auth__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
 .auth__switch-input:focus-visible,
 .auth__btn:focus-visible {
   outline: 3px solid var(--ink);
@@ -218,6 +225,12 @@
 .auth__btn--reload {
   background: var(--sky);
   font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.auth__btn--repo {
+  background: var(--paper);
+  font-size: 0.88rem;
   text-transform: uppercase;
 }
 
